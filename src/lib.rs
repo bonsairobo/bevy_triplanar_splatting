@@ -1,5 +1,7 @@
 //! Triplanar Mapping and Material Blending (AKA Splatting) for Bevy Engine
 //!
+//! ![Screenshot](https://media.githubusercontent.com/media/bonsairobo/bevy_triplanar_splatting/main/examples/screen.png)
+//!
 //! # Scope
 //!
 //! This crate provides the
