@@ -1,0 +1,2 @@
+*.basis filter=lfs diff=lfs merge=lfs -text
+*.basis_linear filter=lfs diff=lfs merge=lfs -text

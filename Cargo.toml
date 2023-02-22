@@ -1,0 +1,23 @@
+[package]
+name = "bevy_triplanar_splatting"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies.bevy]
+version = "0.9"
+default-features = false
+features = [
+    "bevy_asset",
+    "bevy_core_pipeline",
+    "bevy_pbr",
+    "bevy_render",
+]
+
+[dev-dependencies]
+smooth-bevy-cameras = "0.6"
+
+[[example]]
+name = "render"
+required-features = ["bevy/x11", "bevy/basis-universal"]
