@@ -219,7 +219,10 @@ impl AsBindGroupShaderType<TriplanarMaterialUniform> for TriplanarMaterial {
                 flags |= StandardMaterialFlags::ALPHA_MODE_MASK;
             }
             AlphaMode::Blend => flags |= StandardMaterialFlags::ALPHA_MODE_BLEND,
-        };
+            AlphaMode::Premultiplied => flags |= StandardMaterialFlags::ALPHA_MODE_PREMULTIPLIED,
+            AlphaMode::Add => flags |= StandardMaterialFlags::ALPHA_MODE_ADD,
+            AlphaMode::Multiply => flags |= StandardMaterialFlags::ALPHA_MODE_MULTIPLY,
+        }
 
         TriplanarMaterialUniform {
             base_color: self.base_color.as_linear_rgba_f32().into(),
