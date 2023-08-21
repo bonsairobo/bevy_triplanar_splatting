@@ -43,8 +43,6 @@ fn setup(
         occlusion: LoadingImage::new(asset_server.load("array_material/ao.basis")),
         normal_map: LoadingImage::new(asset_server.load("array_material/normal.basis_linear")),
         metal_rough: LoadingImage::new(asset_server.load("array_material/metal_rough.basis")),
-        // TODO: support fallback image
-        emissive: LoadingImage::new(asset_server.load("array_material/albedo.basis")),
         spawned: false,
     });
 
@@ -95,7 +93,6 @@ struct MaterialHandles {
     occlusion: LoadingImage,
     normal_map: LoadingImage,
     metal_rough: LoadingImage,
-    emissive: LoadingImage,
     spawned: bool,
 }
 
@@ -105,7 +102,6 @@ impl MaterialHandles {
             && self.occlusion.loaded
             && self.normal_map.loaded
             && self.metal_rough.loaded
-            && self.emissive.loaded
     }
 
     fn check_loaded(&mut self, created_handle: &Handle<Image>) -> bool {
@@ -116,7 +112,6 @@ impl MaterialHandles {
         any_loaded |= self.occlusion.check_loaded(created_handle);
         any_loaded |= self.normal_map.check_loaded(created_handle);
         any_loaded |= self.metal_rough.check_loaded(created_handle);
-        any_loaded |= self.emissive.check_loaded(created_handle);
         any_loaded
     }
 }
@@ -208,7 +203,7 @@ fn spawn_meshes(
             perceptual_roughness: 0.9,
 
             base_color_texture: Some(handles.base_color.handle.clone()),
-            emissive_texture: Some(handles.emissive.handle.clone()),
+            emissive_texture: None,
             metallic_roughness_texture: Some(handles.metal_rough.handle.clone()),
             normal_map_texture: Some(handles.normal_map.handle.clone()),
             occlusion_texture: Some(handles.occlusion.handle.clone()),

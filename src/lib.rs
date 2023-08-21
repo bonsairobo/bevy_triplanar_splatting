@@ -36,7 +36,6 @@
 //!
 //! # Road Map
 //!
-//! - [ ] fix bevy issue (#6920) with `FallbackImage` (for array textures)
 //! - [ ] per-layer uniform constants (e.g. "emissive", "metallic", etc.)
 //! - [ ] support different texture per plane, using more layers
 //! - [ ] blend materials using depth/height map
