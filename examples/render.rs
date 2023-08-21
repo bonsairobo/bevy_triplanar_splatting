@@ -17,13 +17,12 @@ fn main() {
                 supported_compressed_formats: CompressedImageFormats::BC, // NVIDIA
             },
         )
-        .add_plugin(MaterialPlugin::<TriplanarMaterial>::default())
+        .add_plugins(MaterialPlugin::<TriplanarMaterial>::default())
         // .add_plugin(WireframePlugin::default())
-        .add_plugin(LookTransformPlugin)
-        .add_plugin(FpsCameraPlugin::default())
-        .add_startup_system(setup)
-        .add_system(spawn_meshes)
-        .add_system(move_lights)
+        .add_plugins(LookTransformPlugin)
+        .add_plugins(FpsCameraPlugin::default())
+        .add_systems(Startup, setup)
+        .add_systems(Update, (spawn_meshes, move_lights))
         .run();
 }
 
