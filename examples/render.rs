@@ -6,7 +6,10 @@ use bevy::{
         texture::{CompressedImageFormats, ImageSampler},
     },
 };
-use bevy_triplanar_splatting::triplanar_material::{TriplanarMaterial, ATTRIBUTE_MATERIAL_WEIGHTS};
+use bevy_triplanar_splatting::{
+    triplanar_material::{TriplanarMaterial, ATTRIBUTE_MATERIAL_WEIGHTS},
+    TriplanarMaterialPlugin,
+};
 use smooth_bevy_cameras::{controllers::fps::*, LookTransformPlugin};
 
 fn main() {
@@ -17,7 +20,7 @@ fn main() {
                 supported_compressed_formats: CompressedImageFormats::BC, // NVIDIA
             },
         )
-        .add_plugins(MaterialPlugin::<TriplanarMaterial>::default())
+        .add_plugins(TriplanarMaterialPlugin)
         // .add_plugin(WireframePlugin::default())
         .add_plugins(LookTransformPlugin)
         .add_plugins(FpsCameraPlugin::default())

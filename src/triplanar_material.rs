@@ -100,10 +100,10 @@ impl Default for TriplanarMaterial {
 
 impl Material for TriplanarMaterial {
     fn vertex_shader() -> ShaderRef {
-        "shaders/triplanar.wgsl".into()
+        "shaders/triplanar_material.wgsl".into()
     }
     fn fragment_shader() -> ShaderRef {
-        "shaders/triplanar.wgsl".into()
+        "shaders/triplanar_material.wgsl".into()
     }
 
     fn specialize(

@@ -43,5 +43,9 @@
 //!   - see ["Advanced Terrain Texture
 //!     Splatting"](https://www.gamedeveloper.com/programming/advanced-terrain-texture-splatting)
 
+mod plugin;
+
 pub mod basis_linear_loader;
 pub mod triplanar_material;
+
+pub use plugin::*;
