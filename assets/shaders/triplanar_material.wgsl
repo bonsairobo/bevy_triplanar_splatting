@@ -13,7 +13,7 @@
 #import bevy_pbr::mesh_functions as mesh_functions
 
 #import trimap::biplanar calculate_biplanar_mapping, biplanar_texture_splatted
-#import trimap::triplanar calculate_triplanar_mapping, triplanar_normal_to_world_splatted, triplanar_texture_splatted
+#import trimap::triplanar calculate_triplanar_mapping, triplanar_normal_to_world_splatted
 
 struct Vertex {
     @location(0) position: vec3<f32>,
