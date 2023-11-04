@@ -1,12 +1,9 @@
 use crate::triplanar_material::TriplanarMaterial;
 use bevy::asset::load_internal_asset;
 use bevy::prelude::*;
-use bevy::reflect::TypeUuid;
 
-const TRIPLANAR_SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 2631398565563939187);
-const BIPLANAR_SHADER_HANDLE: HandleUntyped =
-    HandleUntyped::weak_from_u64(Shader::TYPE_UUID, 1945949403120376729);
+const TRIPLANAR_SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(2631398565563939187);
+const BIPLANAR_SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(1945949403120376729);
 
 pub struct TriplanarMaterialPlugin;
 

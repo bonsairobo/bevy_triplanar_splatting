@@ -21,11 +21,11 @@ struct BiplanarMapping {
 // "p" point being textured
 // "n" surface normal at "p"
 // "k" controls the sharpness of the blending in the transitions areas
-fn calculate_biplanar_mapping(p: vec3<f32>, n: vec3<f32>, k: f32) -> BiplanarMapping {
+fn calculate_biplanar_mapping(p: vec3<f32>, n_in: vec3<f32>, k: f32) -> BiplanarMapping {
     // grab coord derivatives for texturing
     let dpdx = dpdx(p);
     let dpdy = dpdy(p);
-    let n = abs(n);
+    let n = abs(n_in);
 
     // NOTE: the axis permutations below are determined to be compatible with
     // the UVs from calculate_triplanar_mapping.

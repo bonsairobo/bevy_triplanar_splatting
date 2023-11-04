@@ -18,6 +18,7 @@
         buildInputs = [
           libxkbcommon
           pkg-config
+          stdenv.cc.cc.lib
           udev
           vulkan-loader
           xorg.libX11

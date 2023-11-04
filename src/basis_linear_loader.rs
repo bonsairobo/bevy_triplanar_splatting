@@ -1,6 +1,9 @@
-use bevy::asset::{AssetLoader, Error, LoadContext, LoadedAsset};
-use bevy::render::texture::{CompressedImageFormats, Image, ImageType};
+use bevy::asset::io::Reader;
+use bevy::asset::{AssetLoader, AsyncReadExt, LoadContext};
+use bevy::render::texture::{CompressedImageFormats, Image, ImageSampler, ImageType, TextureError};
 use bevy::utils::BoxedFuture;
+use std::io;
+use thiserror::Error;
 
 // TODO: remove when https://github.com/bevyengine/bevy/issues/6371 is resolved
 //
@@ -11,20 +14,35 @@ pub struct BasisLinearLoader {
     pub supported_compressed_formats: CompressedImageFormats,
 }
 
+#[derive(Debug, Error)]
+pub enum BasisLinearLoaderError {
+    #[error(transparent)]
+    Io(#[from] io::Error),
+    #[error(transparent)]
+    Texture(#[from] TextureError),
+}
+
 impl AssetLoader for BasisLinearLoader {
+    type Asset = Image;
+    type Error = BasisLinearLoaderError;
+    type Settings = ();
+
     fn load<'a>(
         &'a self,
-        bytes: &'a [u8],
-        load_context: &'a mut LoadContext,
-    ) -> BoxedFuture<'a, Result<(), Error>> {
+        reader: &'a mut Reader,
+        _settings: &'a Self::Settings,
+        _load_context: &'a mut LoadContext,
+    ) -> BoxedFuture<'a, Result<Self::Asset, Self::Error>> {
         Box::pin(async move {
-            load_context.set_default_asset(LoadedAsset::new(Image::from_buffer(
-                bytes,
+            let mut bytes = Vec::new();
+            reader.read_to_end(&mut bytes).await?;
+            Ok(Image::from_buffer(
+                &bytes,
                 ImageType::Extension("basis"),
                 self.supported_compressed_formats,
                 false,
-            )?));
-            Ok(())
+                ImageSampler::Default,
+            )?)
         })
     }
 

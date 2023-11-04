@@ -1,9 +1,9 @@
 use bevy::{
     // pbr::wireframe::{WireframeConfig, WireframePlugin},
     prelude::*,
-    render::{
-        render_resource::{AddressMode, FilterMode, SamplerDescriptor},
-        texture::{CompressedImageFormats, ImageSampler},
+    render::texture::{
+        CompressedImageFormats, ImageAddressMode, ImageFilterMode, ImageSampler,
+        ImageSamplerDescriptor,
     },
 };
 use bevy_triplanar_splatting::{
@@ -15,7 +15,7 @@ use smooth_bevy_cameras::{controllers::fps::*, LookTransformPlugin};
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_asset_loader(
+        .register_asset_loader(
             bevy_triplanar_splatting::basis_linear_loader::BasisLinearLoader {
                 supported_compressed_formats: CompressedImageFormats::BC, // NVIDIA
             },
@@ -104,7 +104,7 @@ impl MaterialHandles {
             && self.metal_rough.loaded
     }
 
-    fn check_loaded(&mut self, created_handle: &Handle<Image>) -> bool {
+    fn check_loaded(&mut self, created_handle: &AssetId<Image>) -> bool {
         // Check every handle without short circuiting because they might be
         // duplicates.
         let mut any_loaded = false;
@@ -129,8 +129,8 @@ impl LoadingImage {
         }
     }
 
-    fn check_loaded(&mut self, created_handle: &Handle<Image>) -> bool {
-        if *created_handle == self.handle {
+    fn check_loaded(&mut self, created_handle: &AssetId<Image>) -> bool {
+        if *created_handle == self.handle.id() {
             self.loaded = true;
             true
         } else {
@@ -151,20 +151,22 @@ fn spawn_meshes(
         return;
     }
 
-    for event in asset_events.iter() {
-        if let AssetEvent::Created { handle } = event {
-            if handles.check_loaded(handle) {
-                let texture = assets.get_mut(handle).unwrap();
-                texture.sampler_descriptor = ImageSampler::Descriptor(SamplerDescriptor {
-                    address_mode_u: AddressMode::Repeat,
-                    address_mode_v: AddressMode::Repeat,
-                    address_mode_w: AddressMode::Repeat,
-                    min_filter: FilterMode::Linear,
-                    mag_filter: FilterMode::Linear,
-                    mipmap_filter: FilterMode::Linear,
-                    ..default()
-                });
+    for event in asset_events.read() {
+        if let &AssetEvent::LoadedWithDependencies { id } = event {
+            if !handles.check_loaded(&id) {
+                continue;
             }
+
+            let texture = assets.get_mut(id).unwrap();
+            texture.sampler = ImageSampler::Descriptor(ImageSamplerDescriptor {
+                address_mode_u: ImageAddressMode::Repeat,
+                address_mode_v: ImageAddressMode::Repeat,
+                address_mode_w: ImageAddressMode::Repeat,
+                min_filter: ImageFilterMode::Linear,
+                mag_filter: ImageFilterMode::Linear,
+                mipmap_filter: ImageFilterMode::Linear,
+                ..default()
+            });
         }
     }
 
