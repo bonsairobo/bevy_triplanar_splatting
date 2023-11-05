@@ -1,20 +1,20 @@
 #import bevy_pbr::pbr_functions as pbr_functions
 #import bevy_pbr::pbr_types as pbr_types
 
-#import bevy_pbr::mesh_bindings            mesh
-#import bevy_pbr::mesh_view_bindings       view, fog, screen_space_ambient_occlusion_texture
-#import bevy_pbr::mesh_view_types          FOG_MODE_OFF
-#import bevy_core_pipeline::tonemapping    screen_space_dither, powsafe, tone_mapping
+#import bevy_pbr::mesh_bindings::mesh
+#import bevy_pbr::mesh_view_bindings::{view, fog, screen_space_ambient_occlusion_texture}
+#import bevy_pbr::mesh_view_types::{FOG_MODE_OFF}
+#import bevy_core_pipeline::tonemapping::{screen_space_dither, powsafe, tone_mapping}
 
 #ifdef SCREEN_SPACE_AMBIENT_OCCLUSION
-#import bevy_pbr::gtao_utils gtao_multibounce
+#import bevy_pbr::gtao_utils::gtao_multibounce
 #endif
 
 #import bevy_pbr::mesh_functions as mesh_functions
 #import bevy_pbr::view_transformations as view_transformations
 
-#import trimap::biplanar calculate_biplanar_mapping, biplanar_texture_splatted
-#import trimap::triplanar calculate_triplanar_mapping, triplanar_normal_to_world_splatted
+#import trimap::biplanar::{calculate_biplanar_mapping, biplanar_texture_splatted}
+#import trimap::triplanar::{calculate_triplanar_mapping, triplanar_normal_to_world_splatted}
 
 struct Vertex {
     @builtin(instance_index) instance_index: u32,
