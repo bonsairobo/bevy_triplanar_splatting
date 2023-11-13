@@ -44,7 +44,6 @@
 
 mod plugin;
 
-pub mod basis_linear_loader;
 pub mod triplanar_material;
 
 pub use plugin::*;

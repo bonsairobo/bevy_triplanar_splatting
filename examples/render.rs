@@ -1,10 +1,7 @@
 use bevy::{
     // pbr::wireframe::{WireframeConfig, WireframePlugin},
     prelude::*,
-    render::texture::{
-        CompressedImageFormats, ImageAddressMode, ImageFilterMode, ImageSampler,
-        ImageSamplerDescriptor,
-    },
+    render::texture::{ImageAddressMode, ImageFilterMode, ImageSampler, ImageSamplerDescriptor},
 };
 use bevy_triplanar_splatting::{
     triplanar_material::{TriplanarMaterial, ATTRIBUTE_MATERIAL_WEIGHTS},
@@ -15,11 +12,6 @@ use smooth_bevy_cameras::{controllers::fps::*, LookTransformPlugin};
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .register_asset_loader(
-            bevy_triplanar_splatting::basis_linear_loader::BasisLinearLoader {
-                supported_compressed_formats: CompressedImageFormats::BC, // NVIDIA
-            },
-        )
         .add_plugins(TriplanarMaterialPlugin)
         // .add_plugin(WireframePlugin::default())
         .add_plugins(LookTransformPlugin)
@@ -41,7 +33,7 @@ fn setup(
     commands.insert_resource(MaterialHandles {
         base_color: LoadingImage::new(asset_server.load("array_material/albedo.basis")),
         occlusion: LoadingImage::new(asset_server.load("array_material/ao.basis")),
-        normal_map: LoadingImage::new(asset_server.load("array_material/normal.basis_linear")),
+        normal_map: LoadingImage::new(asset_server.load("array_material/normal.basis")),
         metal_rough: LoadingImage::new(asset_server.load("array_material/metal_rough.basis")),
         spawned: false,
     });
