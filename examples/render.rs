@@ -38,6 +38,7 @@ fn setup(
     println!("DEVICE FEATURES = {:?}", device.features());
 
     // start loading materials
+    // TODO: automatically choose textures based on GPU supported features
     commands.insert_resource(MaterialHandles {
         base_color: LoadingImage::new(asset_server.load("array_material/albedo.ktx2")),
         occlusion: LoadingImage::new(asset_server.load("array_material/ao.ktx2")),
