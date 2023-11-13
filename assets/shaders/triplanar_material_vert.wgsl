@@ -16,6 +16,18 @@ struct VertexOutput {
     @location(3) @interpolate(flat) instance_index: u32,
 };
 
+// The builtin one didn't work in webgl.
+// "'unpackUnorm4x8' : no matching overloaded function found"
+// https://github.com/gfx-rs/naga/issues/2006
+fn unpack_unorm4x8_(v: u32) -> vec4<f32> {
+    return vec4(
+        f32(v & 0xFFu),
+        f32((v >> 8u) & 0xFFu),
+        f32((v >> 16u) & 0xFFu),
+        f32((v >> 24u) & 0xFFu)
+    ) / 255.0;
+}
+
 @vertex
 fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
@@ -27,7 +39,7 @@ fn vertex(vertex: Vertex) -> VertexOutput {
         model, vec4<f32>(vertex.position, 1.0)
     );
     out.clip_position = view_transformations::position_world_to_clip(out.world_position.xyz);
-    out.material_weights = unpack4x8unorm(vertex.material_weights);
+    out.material_weights = unpack_unorm4x8_(vertex.material_weights);
     out.instance_index = vertex.instance_index;
 
     return out;
