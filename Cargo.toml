@@ -26,4 +26,4 @@ smooth-bevy-cameras = "0.10"
 
 [[example]]
 name = "render"
-required-features = ["bevy/x11", "bevy/basis-universal"]
+required-features = ["bevy/x11"]

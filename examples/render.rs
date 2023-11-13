@@ -1,7 +1,10 @@
 use bevy::{
     // pbr::wireframe::{WireframeConfig, WireframePlugin},
     prelude::*,
-    render::texture::{ImageAddressMode, ImageFilterMode, ImageSampler, ImageSamplerDescriptor},
+    render::{
+        renderer::RenderDevice,
+        texture::{ImageAddressMode, ImageFilterMode, ImageSampler, ImageSamplerDescriptor},
+    },
 };
 use bevy_triplanar_splatting::{
     triplanar_material::{TriplanarMaterial, ATTRIBUTE_MATERIAL_WEIGHTS},
@@ -24,19 +27,31 @@ fn main() {
 /// set up a simple 3D scene
 fn setup(
     asset_server: Res<AssetServer>,
+    device: Res<RenderDevice>,
     mut commands: Commands,
     // mut wireframe_config: ResMut<WireframeConfig>,
 ) {
     // wireframe_config.global = true;
 
+    // List all available device features so we can tell what texture formats
+    // are supported.
+    println!("DEVICE FEATURES = {:?}", device.features());
+
     // start loading materials
     commands.insert_resource(MaterialHandles {
-        base_color: LoadingImage::new(asset_server.load("array_material/albedo.basis")),
-        occlusion: LoadingImage::new(asset_server.load("array_material/ao.basis")),
-        normal_map: LoadingImage::new(asset_server.load("array_material/normal.basis")),
-        metal_rough: LoadingImage::new(asset_server.load("array_material/metal_rough.basis")),
+        base_color: LoadingImage::new(asset_server.load("array_material/albedo.ktx2")),
+        occlusion: LoadingImage::new(asset_server.load("array_material/ao.ktx2")),
+        normal_map: LoadingImage::new(asset_server.load("array_material/normal.ktx2")),
+        metal_rough: LoadingImage::new(asset_server.load("array_material/metal_rough.ktx2")),
         spawned: false,
     });
+    // commands.insert_resource(MaterialHandles {
+    //     base_color: LoadingImage::new(asset_server.load("array_material/albedo.basis")),
+    //     occlusion: LoadingImage::new(asset_server.load("array_material/ao.basis")),
+    //     normal_map: LoadingImage::new(asset_server.load("array_material/normal.basis")),
+    //     metal_rough: LoadingImage::new(asset_server.load("array_material/metal_rough.basis")),
+    //     spawned: false,
+    // });
 
     // commands.insert_resource(AmbientLight {
     //     brightness: 2.0,
