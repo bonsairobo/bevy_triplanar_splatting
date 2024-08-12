@@ -162,7 +162,7 @@ fn fragment(
         let ssao_multibounce = gtao_multibounce(ssao, pbr_input.material.base_color.rgb);
         occlusion = min(occlusion, ssao_multibounce);
 #endif
-        pbr_input.occlusion = occlusion;
+        pbr_input.diffuse_occlusion = occlusion;
 
         pbr_input.frag_coord = in.clip_position;
         pbr_input.world_position = in.world_position;
@@ -187,7 +187,7 @@ fn fragment(
             trimap,
         );
         pbr_input.V = V;
-        pbr_input.occlusion = occlusion;
+        pbr_input.diffuse_occlusion = occlusion;
 
         pbr_input.flags = mesh[in.instance_index].flags;
 
