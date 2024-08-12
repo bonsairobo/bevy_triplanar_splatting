@@ -1,7 +1,6 @@
 use bevy::{
     pbr::{MaterialPipeline, MaterialPipelineKey, StandardMaterialFlags},
     prelude::*,
-    reflect::TypeUuid,
     render::{
         mesh::{MeshVertexAttribute, MeshVertexBufferLayout},
         render_asset::RenderAssets,
@@ -21,8 +20,8 @@ use bevy::{
 /// attribute and give all textures dimension `"2d_array"`. Up to 4 layers are
 /// supported by the shader. Material weights are encoded as 4 `u8` numbers that
 /// get packed into a `u32`.
-#[derive(AsBindGroup, Asset, Reflect, Debug, Clone, TypeUuid)]
-#[uuid = "2f3d7f74-4bf7-4f32-98cd-858edafa5ca2"]
+#[derive(AsBindGroup, Asset, Reflect, Debug, Clone)]
+#[type_path = "bevy_triplanar_splatting::triplanar_material::TriplanarMaterial"]
 #[bind_group_data(TriplanarMaterialKey)]
 #[uniform(0, TriplanarMaterialUniform)]
 #[reflect(Default, Debug)]
