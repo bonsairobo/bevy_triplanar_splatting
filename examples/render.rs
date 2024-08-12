@@ -183,11 +183,7 @@ fn spawn_meshes(
     }
     handles.spawned = true;
 
-    let mut sphere_mesh = Mesh::try_from(shape::Icosphere {
-        radius: 5.0,
-        subdivisions: 6,
-    })
-    .unwrap();
+    let mut sphere_mesh = Mesh::try_from(Sphere::new(5.0).mesh().ico(6).unwrap()).unwrap();
 
     let material_weights: Vec<u32> = sphere_mesh
         .attribute(Mesh::ATTRIBUTE_NORMAL)
