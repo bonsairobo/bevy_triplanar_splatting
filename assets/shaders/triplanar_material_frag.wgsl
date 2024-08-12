@@ -4,7 +4,8 @@
 #import bevy_pbr::mesh_bindings::mesh
 #import bevy_pbr::mesh_view_bindings::{view, fog, screen_space_ambient_occlusion_texture}
 #import bevy_pbr::mesh_view_types::{FOG_MODE_OFF}
-#import bevy_core_pipeline::tonemapping::{screen_space_dither, powsafe, tone_mapping}
+#import bevy_core_pipeline::tonemapping::{screen_space_dither, tone_mapping}
+#import bevy_render::maths::powsafe;
 
 #ifdef SCREEN_SPACE_AMBIENT_OCCLUSION
 #import bevy_pbr::gtao_utils::gtao_multibounce
