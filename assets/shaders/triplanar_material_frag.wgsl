@@ -83,7 +83,7 @@ fn fragment(
 ) -> @location(0) vec4<f32> {
     var output_color: vec4<f32> = material.base_color;
 
-    let is_orthographic = view.projection[3].w == 1.0;
+    let is_orthographic = view.clip_from_view[3].w == 1.0;
     let V = pbr_functions::calculate_view(in.world_position, is_orthographic);
 
     var bimap = calculate_biplanar_mapping(in.world_position.xyz, in.world_normal, 8.0);
