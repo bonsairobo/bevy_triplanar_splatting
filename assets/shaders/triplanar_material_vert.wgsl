@@ -32,7 +32,7 @@ fn unpack_unorm4x8_(v: u32) -> vec4<f32> {
 fn vertex(vertex: Vertex) -> VertexOutput {
     var out: VertexOutput;
 
-    var model = mesh_functions::get_model_matrix(vertex.instance_index);
+    var model = mesh_functions::get_world_from_local(vertex.instance_index);
 
     out.world_normal = mesh_functions::mesh_normal_local_to_world(vertex.normal, vertex.instance_index);
     out.world_position = mesh_functions::mesh_position_local_to_world(

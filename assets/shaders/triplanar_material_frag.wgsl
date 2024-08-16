@@ -4,7 +4,8 @@
 #import bevy_pbr::mesh_bindings::mesh
 #import bevy_pbr::mesh_view_bindings::{view, fog, screen_space_ambient_occlusion_texture}
 #import bevy_pbr::mesh_view_types::{FOG_MODE_OFF}
-#import bevy_core_pipeline::tonemapping::{screen_space_dither, powsafe, tone_mapping}
+#import bevy_core_pipeline::tonemapping::{screen_space_dither, tone_mapping}
+#import bevy_render::maths::powsafe;
 
 #ifdef SCREEN_SPACE_AMBIENT_OCCLUSION
 #import bevy_pbr::gtao_utils::gtao_multibounce
@@ -35,27 +36,27 @@ struct TriplanarMaterial {
     uv_scale: f32,
 };
 
-@group(1) @binding(0)
+@group(2) @binding(0)
 var<uniform> material: TriplanarMaterial;
-@group(1) @binding(1)
+@group(2) @binding(1)
 var base_color_texture: texture_2d_array<f32>;
-@group(1) @binding(2)
+@group(2) @binding(2)
 var base_color_sampler: sampler;
-@group(1) @binding(3)
+@group(2) @binding(3)
 var emissive_texture: texture_2d_array<f32>;
-@group(1) @binding(4)
+@group(2) @binding(4)
 var emissive_sampler: sampler;
-@group(1) @binding(5)
+@group(2) @binding(5)
 var metallic_roughness_texture: texture_2d_array<f32>;
-@group(1) @binding(6)
+@group(2) @binding(6)
 var metallic_roughness_sampler: sampler;
-@group(1) @binding(7)
+@group(2) @binding(7)
 var occlusion_texture: texture_2d_array<f32>;
-@group(1) @binding(8)
+@group(2) @binding(8)
 var occlusion_sampler: sampler;
-@group(1) @binding(9)
+@group(2) @binding(9)
 var normal_map_texture: texture_2d_array<f32>;
-@group(1) @binding(10)
+@group(2) @binding(10)
 var normal_map_sampler: sampler;
 
 fn alpha_discard_copy_paste(material: TriplanarMaterial, output_color: vec4<f32>) -> vec4<f32>{
@@ -83,7 +84,7 @@ fn fragment(
 ) -> @location(0) vec4<f32> {
     var output_color: vec4<f32> = material.base_color;
 
-    let is_orthographic = view.projection[3].w == 1.0;
+    let is_orthographic = view.clip_from_view[3].w == 1.0;
     let V = pbr_functions::calculate_view(in.world_position, is_orthographic);
 
     var bimap = calculate_biplanar_mapping(in.world_position.xyz, in.world_normal, 8.0);
@@ -161,7 +162,7 @@ fn fragment(
         let ssao_multibounce = gtao_multibounce(ssao, pbr_input.material.base_color.rgb);
         occlusion = min(occlusion, ssao_multibounce);
 #endif
-        pbr_input.occlusion = occlusion;
+        pbr_input.diffuse_occlusion = occlusion;
 
         pbr_input.frag_coord = in.clip_position;
         pbr_input.world_position = in.world_position;
@@ -186,7 +187,7 @@ fn fragment(
             trimap,
         );
         pbr_input.V = V;
-        pbr_input.occlusion = occlusion;
+        pbr_input.diffuse_occlusion = occlusion;
 
         pbr_input.flags = mesh[in.instance_index].flags;
 
