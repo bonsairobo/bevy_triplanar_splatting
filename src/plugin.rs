@@ -1,5 +1,5 @@
 use crate::triplanar_material::TriplanarMaterial;
-use bevy::asset::load_internal_asset;
+use bevy::asset::{embedded_asset, load_internal_asset};
 use bevy::prelude::*;
 
 const TRIPLANAR_SHADER_HANDLE: Handle<Shader> = Handle::weak_from_u128(2631398565563939187);
@@ -23,5 +23,7 @@ impl Plugin for TriplanarMaterialPlugin {
             "shaders/biplanar.wgsl",
             Shader::from_wgsl
         );
+        embedded_asset!(app, "shaders/triplanar_material_vert.wgsl");
+        embedded_asset!(app, "shaders/triplanar_material_frag.wgsl");
     }
 }
