@@ -9,7 +9,7 @@ edition = "2021"
 thiserror = "1"
 
 [dependencies.bevy]
-version = "0.14.1"
+version = "0.15.0"
 default-features = false
 features = [
     "bevy_asset",
@@ -23,8 +23,8 @@ features = [
 ]
 
 [dev-dependencies]
-smooth-bevy-cameras = "0.12.0"
-bevy = "0.14.1"
+smooth-bevy-cameras = "0.13.0"
+bevy = { version = "0.15.0", features = ["basis-universal"] }
 
 [[example]]
 name = "render"

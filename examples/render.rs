@@ -1,10 +1,8 @@
 use bevy::{
+    image::{ImageAddressMode, ImageFilterMode, ImageSampler, ImageSamplerDescriptor},
     // pbr::wireframe::{WireframeConfig, WireframePlugin},
     prelude::*,
-    render::{
-        renderer::RenderDevice,
-        texture::{ImageAddressMode, ImageFilterMode, ImageSampler, ImageSamplerDescriptor},
-    },
+    render::renderer::RenderDevice,
 };
 use bevy_triplanar_splatting::{
     triplanar_material::{TriplanarMaterial, ATTRIBUTE_MATERIAL_WEIGHTS},
@@ -19,6 +17,7 @@ fn main() {
         // .add_plugin(WireframePlugin::default())
         .add_plugins(LookTransformPlugin)
         .add_plugins(FpsCameraPlugin::default())
+        //.register_asset_loader(ImageLoader::new(CompressedImageFormats::all()))
         .add_systems(Startup, setup)
         .add_systems(Update, (spawn_meshes, move_lights))
         .run();
@@ -62,18 +61,15 @@ fn setup(
     // Spawn lights and camera.
     commands.spawn((
         MovingLight,
-        PointLightBundle {
-            point_light: PointLight {
-                intensity: 50000.,
-                range: 100.,
-                ..default()
-            },
+        PointLight {
+            intensity: 50000.,
+            range: 100.,
             ..default()
         },
     ));
 
     commands
-        .spawn(Camera3dBundle::default())
+        .spawn(Camera3d::default())
         .insert(FpsCameraBundle::new(
             FpsCameraController {
                 translate_sensitivity: 8.0,
@@ -89,7 +85,7 @@ fn setup(
 struct MovingLight;
 
 fn move_lights(time: Res<Time>, mut lights: Query<(&MovingLight, &mut Transform)>) {
-    let t = time.elapsed_seconds();
+    let t = time.elapsed_secs();
     for (_, mut tfm) in lights.iter_mut() {
         tfm.translation = 15.0 * Vec3::new(t.cos(), 1.0, t.sin());
     }
@@ -202,9 +198,9 @@ fn spawn_meshes(
         .collect();
     sphere_mesh.insert_attribute(ATTRIBUTE_MATERIAL_WEIGHTS, material_weights);
 
-    commands.spawn(MaterialMeshBundle {
-        mesh: meshes.add(sphere_mesh),
-        material: materials.add(TriplanarMaterial {
+    commands.spawn((
+        Mesh3d(meshes.add(sphere_mesh)),
+        MeshMaterial3d(materials.add(TriplanarMaterial {
             metallic: 0.05,
             perceptual_roughness: 0.9,
 
@@ -216,9 +212,8 @@ fn spawn_meshes(
 
             uv_scale: 1.0,
             ..default()
-        }),
-        ..default()
-    });
+        })),
+    ));
 }
 
 /// Linear transformation from domain `[-1.0, 1.0]` into range `[0.0, 1.0]`.
